@@ -9,6 +9,10 @@ const jwtExpiresIn = process.env.JWT_EXPIRES_IN
 
 passport.use(User.createStrategy())
 
+const responseHello = () => {
+  return "Hello"
+}
+
 const signUp = (req, res, next) => {
 
   if (!req.body.email || !req.body.password) {
@@ -76,5 +80,6 @@ module.exports = {
   signUp,
   signIn: passport.authenticate('local', { session: false }),
   requireJWT: passport.authenticate('jwt', { session: false }),
-  signJWTForUser
+  signJWTForUser,
+  responseHello,
 }
