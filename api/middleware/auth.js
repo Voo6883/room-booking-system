@@ -10,7 +10,7 @@ const jwtExpiresIn = process.env.JWT_EXPIRES_IN
 passport.use(User.createStrategy())
 
 const responseHello = () => {
-  return "Hello"
+  return "Hello World"
 }
 
 const signUp = (req, res, next) => {
