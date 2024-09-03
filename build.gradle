@@ -1,0 +1,45 @@
+plugins {
+    id 'base'
+}
+
+// Task to install dependencies in the web folder
+task npmInstallWeb(type: Exec) {
+    description = 'Install project dependencies for the web folder using npm'
+    group = 'build'
+    workingDir = file('web')
+    commandLine 'npm', 'install', '--force'
+}
+
+// Task to install dependencies in the api folder
+task npmInstallApi(type: Exec) {
+    description = 'Install project dependencies for the api folder using npm'
+    group = 'build'
+    workingDir = file('api')
+    commandLine 'npm', 'install'
+}
+
+// Task to build the JavaScript project in the web folder
+task npmBuildWeb(type: Exec) {
+    description = 'Build the JavaScript project in the web folder using npm'
+    group = 'build'
+    workingDir = file('web')
+    commandLine 'npm', 'run', 'build'
+    dependsOn npmInstallWeb
+}
+
+// Custom clean task to remove output directories and node_modules
+task cleanCustom(type: Delete) {
+    delete 'web/dist', 'api/dist', 'web/node_modules', 'api/node_modules'
+}
+
+// Custom build task to ensure the entire build process is followed
+task fullBuild {
+    description = 'Custom build task that installs dependencies, builds the project, and packages the output'
+    group = 'build'
+    dependsOn cleanCustom, npmInstallWeb, npmBuildWeb
+}
+
+// Apply the test.gradle file to include testing tasks at the end
+apply from: 'test.gradle'
+
+defaultTasks 'fullBuild' // Set the default task to the custom task

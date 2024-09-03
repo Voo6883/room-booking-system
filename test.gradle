@@ -1,0 +1,24 @@
+// Task to run unit tests
+task npmTestWeb(type: Exec) {
+    description = 'Run unit tests in the web folder using npm'
+    group = 'verification'
+    workingDir = file('web')
+    commandLine 'npm', 'test', '--', '--watchAll=false' // Run all tests without watching
+    dependsOn tasks.named('npmInstallWeb')
+}
+
+// Task to measure code coverage
+task npmTestCoverage(type: Exec) {
+    description = 'Generate code coverage report in the web folder using npm'
+    group = 'verification'
+    workingDir = file('web')
+    commandLine 'npm', 'run', 'test:coverage' // Use the test:coverage script
+    dependsOn tasks.named('npmInstallWeb')
+}
+
+// Task to run all tests and generate reports
+task runAllTests {
+    description = 'Run all tests and generate reports'
+    group = 'verification'
+    dependsOn npmTestWeb, npmTestCoverage
+}
