@@ -7,10 +7,10 @@ pipeline {
             }
         }
         stage('Build') {
-            steps { gradle 'fullBuild' }
+            steps { powershell 'gradle fullBuild' }
         }
         stage('Test') {
-            steps { gradle 'runAllTests' }
+            steps { powershell 'gradle runAllTests' }
         }
         stage('Deploy') {
             steps { powershell 'docker-compose up' }
