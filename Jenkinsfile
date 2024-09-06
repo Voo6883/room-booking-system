@@ -5,22 +5,27 @@ pipeline {
         NPM_PATH = 'C:\Program Files\nodejs' // Adjust path if needed
     }
     stages {
+        stage('Install npm') {
+            steps {
+                powershell 'npm install'
+            }
+        }
         stage('Checkout') {
             steps {
                 git branch: 'master', url: 'https://github.com/Voo6883/room-booking-system.git'
             }
         }
-        stage('Verify NPM') {
-            steps {
-                script {
-                    // Check if npm is installed and available in the environment
-                    def npmVersion = sh(script: "${env.NPM_PATH} --version", returnStatus: true)
-                    if (npmVersion != 0) {
-                        error 'npm is not installed or not found in the specified path.'
-                    }
-                }
-            }
-        }
+        // stage('Verify NPM') {
+        //     steps {
+        //         script {
+        //             // Check if npm is installed and available in the environment
+        //             def npmVersion = sh(script: "${env.NPM_PATH} --version", returnStatus: true)
+        //             if (npmVersion != 0) {
+        //                 error 'npm is not installed or not found in the specified path.'
+        //             }
+        //         }
+        //     }
+        // }
         stage('Build') {
             steps { 
                 powershell 'gradle fullBuild'
